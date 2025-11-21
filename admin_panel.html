@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+    
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/admin_panel.css">
+    <title>Admin Panel - アニビジョン</title>
+</head>
+
+<body>
+    <div class="admin-container">
+        <h1>Admin Panel - アニビジョン</h1>
+
+        <div id="message"></div>
+        <!-- Add Anime Form -->
+        <div class="form-section" id="addFormSection">
+            <h2>Add New Anime</h2>
+            <form id="animeForm">
+                <div class="form-group">
+                    <label>Anime Title *</label>
+                    <input type="text" id="title" placeholder="Enter anime title" required>
+                </div>
+
+                <div class="form-group">
+                    <label>English Description *</label>
+                    <textarea id="synopsis_en" placeholder="Enter English description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Japanese Description *</label>
+                    <textarea id="synopsis_jp" placeholder="Enter Japanese description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Myanmar Description</label>
+                    <textarea id="synopsis_my" placeholder="Enter Myanmar description (optional)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Community Rating (1-10) *</label>
+                    <input type="number" id="rating" min="1" max="10" step="0.1" placeholder="8.5" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Characters *</label>
+                    <input type="text" id="characters" placeholder="Eren Yeager, Mikasa Ackerman, Armin Arlert"
+                        required>
+                    <div class="help-text">Separate character names with commas</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Genres * (Maximum 3 genres)</label>
+                    <input type="text" id="genres" placeholder="Action, Fantasy, Drama" required>
+                    <div class="help-text">Enter up to 3 genres, separated by commas</div>
+                </div>
+
+                <!-- Songs Input Section -->
+                <div class="form-group">
+                    <label>Related Songs (Maximum 4 songs)</label>
+                    <div class="songs-inputs">
+                        <input type="text" id="song1" placeholder="Song 1: Title | YouTubeID">
+                        <input type="text" id="song2" placeholder="Song 2: Title | YouTubeID">
+                        <input type="text" id="song3" placeholder="Song 3: Title | YouTubeID">
+                        <input type="text" id="song4" placeholder="Song 4: Title | YouTubeID">
+                    </div>
+                    <div class="help-text">Format: "Song Title | YouTubeID" (e.g., "Guren no Yumiya | XMXgHfHxKVM")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Anime Poster Image</label>
+                    <input type="text" id="image" placeholder="attack-on-titan.jpg">
+                    <div class="help-text">Image file name for the anime poster</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add Anime</button>
+            </form>
+
+            <!-- Data Management Section -->
+            <div class="form-section">
+                <h2>Data Management</h2>
+                <button class="btn btn-secondary" onclick="convertOldAnimeData()">
+                    Convert Old Anime Data to New Format
+                </button>
+                <div class="help-text">Convert existing anime from string to multi-language format</div>
+            </div>
+        </div>
+
+        <!-- Anime List -->
+        <div class="anime-list">
+            <h2>Anime List</h2>
+            <div id="animeListContainer">
+                <!-- Anime list will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div class="modal-overlay" id="editModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Anime</h2>
+                    <button class="close-btn" onclick="closeEditModal()">×</button>
+                </div>
+                <form id="editAnimeForm" onsubmit="updateAnime(); return false;">
+
+                    <input type="hidden" id="editId">
+
+                    <div class="form-group">
+                        <label>Anime Title *</label>
+                        <input type="text" id="editTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>English Description *</label>
+                        <textarea id="editSynopsisEn" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Japanese Description *</label>
+                        <textarea id="editSynopsisJp" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Myanmar Description</label>
+                        <textarea id="editSynopsisMy"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Community Rating *</label>
+                        <input type="number" id="editRating" min="1" max="10" step="0.1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Characters *</label>
+                        <input type="text" id="editCharacters" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Genres * (Maximum 3 genres)</label>
+                        <input type="text" id="editGenres" required>
+                        <div class="help-text">Enter up to 3 genres, separated by commas</div>
+                    </div>
+
+                    <!-- Edit Songs Input Section -->
+                    <div class="form-group">
+                        <label>Related Songs (Maximum 4 songs)</label>
+                        <div class="songs-inputs">
+                            <input type="text" id="editSong1" placeholder="Song 1: Title | YouTubeID">
+                            <input type="text" id="editSong2" placeholder="Song 2: Title | YouTubeID">
+                            <input type="text" id="editSong3" placeholder="Song 3: Title | YouTubeID">
+                            <input type="text" id="editSong4" placeholder="Song 4: Title | YouTubeID">
+                        </div>
+                        <div class="help-text">Format: "Song Title | YouTubeID" (e.g., "Guren no Yumiya | XMXgHfHxKVM")
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Image File</label>
+                        <input type="text" id="editImage">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update Anime</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <button class="btn btn-secondary" onclick="goToMainSite()">View Website</button>
+        </div>
+    </div>
+
+    <script src="js/data_manager.js"></script>
+    <script>
+        // Global variables
+        const form = document.getElementById('animeForm');
+        const messageDiv = document.getElementById('message');
+        const animeListContainer = document.getElementById('animeListContainer');
+        const editForm = document.getElementById('editAnimeForm');
+        const editModal = document.getElementById('editModal');
+
+        // Load anime list on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadAnimeList();
+            initializeEventListeners();
+            setupModalEvents();
+        });
+
+        function initializeEventListeners() {
+            // Add anime form
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                addNewAnime();
+            });
+
+            // Edit anime form
+            editForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                updateAnime();
+            });
+        }
+
+        function setupModalEvents() {
+            // ESC key to close modal
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeEditModal();
+                }
+            });
+
+            // Close modal when clicking outside
+            editModal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeEditModal();
+                }
+            });
+        }
+
+        // Modal functions
+        function openEditModal() {
+            editModal.style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            editModal.style.display = 'none';
+        }
+
+        // Process songs from input fields
+        function processSongs() {
+            const songs = [];
+
+            for (let i = 1; i <= 4; i++) {
+                const songInput = document.getElementById('song' + i).value.trim();
+                if (songInput) {
+                    const parts = songInput.split('|').map(part => part.trim());
+                    if (parts.length === 2 && parts[0] && parts[1]) {
+                        songs.push({
+                            title: parts[0],
+                            youtubeId: parts[1]
+                        });
+                    }
+                }
+            }
+
+            return songs;
+        }
+
+        // Process edit songs from input fields
+        function processEditSongs() {
+            const songs = [];
+
+            for (let i = 1; i <= 4; i++) {
+                const songInput = document.getElementById('editSong' + i).value.trim();
+                if (songInput) {
+                    const parts = songInput.split('|').map(part => part.trim());
+                    if (parts.length === 2 && parts[0] && parts[1]) {
+                        songs.push({
+                            title: parts[0],
+                            youtubeId: parts[1]
+                        });
+                    }
+                }
+            }
+
+            return songs;
+        }
+
+        function addNewAnime() {
+            const title = document.getElementById('title').value;
+            const synopsis_en = document.getElementById('synopsis_en').value;
+            const synopsis_jp = document.getElementById('synopsis_jp').value;
+            const synopsis_my = document.getElementById('synopsis_my').value;
+            const rating = document.getElementById('rating').value;
+            const characters = document.getElementById('characters').value;
+            const genres = document.getElementById('genres').value;
+            const image = document.getElementById('image').value;
+            const songs = processSongs();
+
+            if (!title || !synopsis_en || !synopsis_jp || !rating || !characters || !genres) {
+                showMessage('Please fill in all required fields!', 'error');
+                return;
+            }
+
+            try {
+                const newAnime = animeManager.addNewAnime(title, synopsis_en, synopsis_jp, synopsis_my, rating, characters, "Main Character", image, genres);
+
+                // Add songs to the new anime
+                const animes = animeManager.getAllAnimes();
+                const animeIndex = animes.findIndex(a => a.id === newAnime.id);
+                if (animeIndex !== -1) {
+                    animes[animeIndex].songs = songs;
+                    localStorage.setItem('animeDatabase', JSON.stringify(animes));
+                }
+
+                showMessage('Anime added successfully!', 'success');
+                form.reset();
+                loadAnimeList();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        function loadAnimeList() {
+            const animes = animeManager.getAllAnimes();
+
+            if (!animes || animes.length === 0) {
+                animeListContainer.innerHTML = '<div class="no-data">No anime found. Add your first anime!</div>';
+                return;
+            }
+
+            animeListContainer.innerHTML = animes.map(anime => `
+                <div class="anime-item">
+                    <div class="anime-info">
+                        <h3>${anime.title}</h3>
+                        <p><strong>Rating:</strong> ${anime.rating}/10 | <strong>Characters:</strong> ${anime.characters.length} | <strong>Songs:</strong> ${anime.songs ? anime.songs.length : 0}</p>
+                        <p><strong>Description:</strong> ${getSynopsisPreview(anime.synopsis)}</p>
+                        <small><strong>Data Format:</strong> ${typeof anime.synopsis === 'object' ? 'Multi-language' : 'Old Format'}</small>
+                    </div>
+                    <div class="anime-actions">
+                        <button class="btn-edit" onclick="editAnime(${anime.id})">Edit</button>
+                        <button class="btn-delete" onclick="deleteAnime(${anime.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getSynopsisPreview(synopsis) {
+            if (typeof synopsis === 'object') {
+                return synopsis.en ? synopsis.en.substring(0, 80) + '...' : 'No description';
+            }
+            return synopsis ? synopsis.substring(0, 80) + '...' : 'No description';
+        }
+
+        function editAnime(animeId) {
+            console.log('Editing anime ID:', animeId);
+
+            const animes = animeManager.getAllAnimes();
+            const anime = animes.find(a => a.id === animeId);
+
+            if (!anime) {
+                showMessage('Anime not found!', 'error');
+                return;
+            }
+
+            // Fill edit form with anime data
+            document.getElementById('editId').value = anime.id;
+            document.getElementById('editTitle').value = anime.title;
+            document.getElementById('editGenres').value = anime.genres ? anime.genres.join(', ') : '';
+
+            // Fill songs data
+            if (anime.songs && anime.songs.length > 0) {
+                for (let i = 0; i < 4; i++) {
+                    const songInput = document.getElementById('editSong' + (i + 1));
+                    if (anime.songs[i]) {
+                        songInput.value = `${anime.songs[i].title} | ${anime.songs[i].youtubeId}`;
+                    } else {
+                        songInput.value = '';
+                    }
+                }
+            } else {
+                // Clear all song inputs
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById('editSong' + i).value = '';
+                }
+            }
+
+            // Handle both old and new data structure
+            if (typeof anime.synopsis === 'object') {
+                document.getElementById('editSynopsisEn').value = anime.synopsis.en || '';
+                document.getElementById('editSynopsisJp').value = anime.synopsis.jp || '';
+                document.getElementById('editSynopsisMy').value = anime.synopsis.my || '';
+            } else {
+                document.getElementById('editSynopsisEn').value = anime.synopsis || '';
+                document.getElementById('editSynopsisJp').value = '';
+                document.getElementById('editSynopsisMy').value = '';
+            }
+
+            document.getElementById('editRating').value = anime.rating;
+            document.getElementById('editCharacters').value = anime.characters.map(c => c.name).join(', ');
+            document.getElementById('editImage').value = anime.image || '';
+
+            // Open modal
+            openEditModal();
+            showMessage('Now editing: ' + anime.title, 'success');
+        }
+
+        function updateAnime() {
+            const animeId = parseInt(document.getElementById('editId').value);
+            const title = document.getElementById('editTitle').value;
+            const synopsis_en = document.getElementById('editSynopsisEn').value;
+            const synopsis_jp = document.getElementById('editSynopsisJp').value;
+            const synopsis_my = document.getElementById('editSynopsisMy').value;
+            const rating = document.getElementById('editRating').value;
+            const characters = document.getElementById('editCharacters').value;
+            const image = document.getElementById('editImage').value;
+            const genres = document.getElementById('editGenres').value;
+            const songs = processEditSongs();
+
+            const animes = animeManager.getAllAnimes();
+            const animeIndex = animes.findIndex(a => a.id === animeId);
+
+            if (animeIndex !== -1) {
+                animes[animeIndex] = {
+                    ...animes[animeIndex],
+                    title: title,
+                    synopsis: {
+                        en: synopsis_en,
+                        jp: synopsis_jp,
+                        my: synopsis_my
+                    },
+                    rating: parseFloat(rating),
+                    characters: animeManager.createCharacters(characters, "Main Character"),
+                    image: image || "default.jpg",
+                    genres: animeManager.processGenres(genres),
+                    songs: songs
+                };
+
+                localStorage.setItem('animeDatabase', JSON.stringify(animes));
+                showMessage('Anime updated successfully!', 'success');
+                closeEditModal();
+                loadAnimeList();
+            } else {
+                showMessage('Anime not found!', 'error');
+            }
+        }
+
+        function deleteAnime(animeId) {
+            if (confirm('Are you sure you want to delete this anime?')) {
+                const animes = animeManager.getAllAnimes();
+                const updatedAnimes = animes.filter(anime => anime.id !== animeId);
+                localStorage.setItem('animeDatabase', JSON.stringify(updatedAnimes));
+                loadAnimeList();
+                showMessage('Anime deleted successfully!', 'success');
+            }
+        }
+
+        function convertOldAnimeData() {
+            const animes = animeManager.getAllAnimes();
+            let updatedCount = 0;
+
+            animes.forEach(anime => {
+                if (typeof anime.synopsis === 'string') {
+                    anime.synopsis = {
+                        en: anime.synopsis,
+                        jp: anime.synopsis,
+                        my: ""
+                    };
+                    updatedCount++;
+                }
+            });
+            localStorage.setItem('animeDatabase', JSON.stringify(animes));
+            showMessage(`✅ Converted ${updatedCount} anime entries to new format!`, 'success');
+            loadAnimeList();
+        }
+
+        function goToMainSite() {
+            window.location.href = 'index.html';
+        }
+
+        function showMessage(text, type) {
+            messageDiv.innerHTML = `<div class="message ${type}">${text}</div>`;
+            setTimeout(() => messageDiv.innerHTML = '', 4000);
+        }
+    </script>
+</body>
+</html>

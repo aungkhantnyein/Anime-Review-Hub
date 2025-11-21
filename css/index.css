@@ -1,0 +1,1192 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-red: #e74c3c;
+    --primary-blue: #3498db;
+    --dark-bg: #1a1a1a;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --text-light: #ffffff;
+    --text-gray: #bdc3c7;
+    --gradient: linear-gradient(135deg, #e74c3c, #3498db);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    background-color: #000;
+}
+
+/* Splash Screen Styles */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: var(--text-light);
+}
+
+.splash-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/bgimg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2;
+}
+
+.splash-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+.splash-content {
+    text-align: center;
+    animation: fadeInUp 1s ease-out;
+    z-index: 1;
+}
+
+.logo {
+    font-size: 4.5rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(231, 76, 60, 0.3);
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.enter-btn {
+    padding: 16px 48px;
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(20px);
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.enter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient);
+    transition: left 0.4s ease;
+    z-index: -1;
+}
+
+.enter-btn:hover::before {
+    left: 0;
+}
+
+.enter-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
+    border-color: transparent;
+}
+
+/* Main Content */
+.main-content {
+    display: none;
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+        url("../img/bgimg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--text-light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Main Header */
+.main-header {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-red);
+    text-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::before,
+.nav-link.active::before {
+    width: 80%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-red);
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    background: linear-gradient(45deg, var(--text-light), var(--primary-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+    color: var(--text-gray);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.search-bar {
+    display: flex;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 50px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Search Icon Style */
+.search-icon::before {
+    content: "";
+    margin-right: 5px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 18px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    background: transparent;
+    color: var(--text-light);
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.search-btn {
+    padding: 18px 35px;
+    background: var(--gradient);
+    color: var(--text-light);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+}
+
+.search-icon {
+    font-size: 1.1rem;
+}
+
+/* Featured Sections */
+.featured-section,
+.characters-section {
+    padding: 6rem 0;
+}
+
+.section-title {
+    font-size: 3rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    color: var(--text-light);
+    position: relative;
+    font-weight: 700;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: var(--gradient);
+    border-radius: 2px;
+}
+
+/* Anime Grid */
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+    padding: 0 1rem;
+}
+
+.anime-card {
+    width: 100%;
+    max-width: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+}
+
+.anime-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.anime-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.anime-card:hover .anime-poster {
+    transform: scale(1.05);
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.anime-info-simple {
+    padding: 1rem;
+    text-align: center;
+}
+
+.anime-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.anime-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+    justify-content: center;
+}
+
+.genre-tag {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Simple Community Rating */
+.community-rating-simple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #f39c12;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+.rating-stars-simple {
+    color: #f39c12;
+    font-size: 1rem;
+}
+
+.rating-value-simple {
+    font-weight: 700;
+    color: #f39c12;
+}
+
+/* Characters Grid */
+.characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+}
+
+/* About Section Styles */
+.about-section {
+    padding: 4rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    margin-top: 2rem;
+}
+
+.about-content {
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #bdc3c7;
+    font-family: sans-serif;
+}
+
+.about-content p {
+    margin-bottom: 1.5rem;
+}
+
+.about-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Footer */
+.main-footer {
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--text-light);
+    text-align: center;
+    padding: 3rem 2rem;
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-sub {
+    margin-top: 1rem;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+.loading-text {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 4rem;
+    color: var(--text-gray);
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+/* Genre Filter Tabs */
+.genre-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 0 1rem;
+}
+
+.genre-tab {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.genre-tab:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.genre-tab.active {
+    background: var(--primary-red);
+    color: white;
+    border-color: var(--primary-red);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* User Section Styles */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-auth-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.nav-auth-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.welcome-text {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.user-auth {
+    display: flex;
+    gap: 10px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Modal Styles for User System */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #2c3e50;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 2px solid #e74c3c;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-header h2 {
+    color: #e74c3c;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    color: #333;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #e74c3c;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #c0392b;
+}
+
+.btn-secondary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #2980b9;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design Fixes */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 1000px;
+        padding: 0 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 1rem 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .nav-links {
+        gap: 1.5rem;
+    }
+    
+    .nav-link {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .search-bar {
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .navbar {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav-brand {
+        font-size: 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-section {
+        padding: 3rem 1rem;
+        min-height: 60vh;
+    }
+    
+    .search-bar {
+        flex-direction: column;
+        max-width: 400px;
+        gap: 0.5rem;
+    }
+    
+    .search-input {
+        padding: 15px 20px;
+        border-radius: 25px;
+    }
+    
+    .search-btn {
+        padding: 15px 25px;
+        border-radius: 25px;
+        justify-content: center;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .anime-card {
+        max-width: 160px;
+    }
+    
+    .anime-image {
+        height: 240px;
+    }
+    
+    .featured-section {
+        padding: 4rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .nav-links {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .nav-link {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .user-section {
+        gap: 0.5rem;
+    }
+    
+    .nav-auth-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .hero-section {
+        padding: 2rem 1rem;
+        min-height: 50vh;
+    }
+    
+    .search-bar {
+        max-width: 350px;
+    }
+    
+    .search-input {
+        padding: 12px 18px;
+        font-size: 1rem;
+    }
+    
+    .search-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .anime-card {
+        max-width: 140px;
+    }
+    
+    .anime-image {
+        height: 200px;
+    }
+    
+    .anime-title {
+        font-size: 0.9rem;
+    }
+    
+    .genre-tag {
+        font-size: 0.65rem;
+        padding: 1px 6px;
+    }
+    
+    .community-rating-simple {
+        font-size: 0.8rem;
+    }
+    
+    .genre-filter-tabs {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .genre-tab {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .anime-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.6rem;
+    }
+    
+    .anime-card {
+        max-width: 120px;
+    }
+    
+    .anime-image {
+        height: 180px;
+    }
+    
+    .anime-title {
+        font-size: 0.8rem;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .search-bar {
+        max-width: 300px;
+    }
+}
+
+/* Fix for very small screens */
+@media (max-width: 320px) {
+    .anime-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .anime-card {
+        max-width: 100%;
+    }
+}
+
+/* Prevent horizontal scroll */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Ensure images are responsive */
+.anime-poster,
+.anime-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Fix for flex items shrinking properly */
+.navbar {
+    flex-shrink: 0;
+}
+
+.user-section {
+    flex-shrink: 0;
+}
+
+/* Ensure search bar doesn't break */
+.search-bar {
+    flex-shrink: 0;
+}
+
+/* Make sure anime cards don't overflow */
+.anime-info-simple {
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.anime-title {
+    word-break: break-word;
+    hyphens: auto;
+}
+
+
+/* Gap Fixes for Responsive Design */
+.hero-section {
+    min-height: 60vh; /* Reduce height */
+    padding: 2rem 1rem; /* Reduce padding */
+}
+
+.hero-content {
+    margin-top: -2rem; /* Pull content up */
+}
+
+.search-bar {
+    margin-top: 1.5rem; /* Reduce margin */
+}
+
+.featured-section {
+    padding: 3rem 0; /* Reduce padding */
+}
+
+.anime-grid {
+    gap: 1rem; /* Reduce gap between cards */
+    margin-top: 1rem; /* Reduce top margin */
+}
+
+/* Reduce spacing in anime cards */
+.anime-info-simple {
+    padding: 0.8rem; /* Reduce padding */
+}
+
+.anime-title {
+    margin-bottom: 0.3rem; /* Reduce margin */
+    font-size: 0.9rem; /* Slightly smaller font */
+    line-height: 1.2; /* Tighter line height */
+}
+
+.anime-genres {
+    margin-bottom: 0.3rem; /* Reduce margin */
+    gap: 2px; /* Tighter gap between genre tags */
+}
+
+.community-rating-simple {
+    margin-top: 0.3rem; /* Reduce margin */
+    gap: 3px; /* Tighter gap */
+    font-size: 0.8rem; /* Smaller font */
+}
+
+/* Mobile gap fixes */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 50vh;
+        padding: 1.5rem 1rem;
+    }
+    
+    .hero-content {
+        margin-top: -1rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .search-bar {
+        margin-top: 1rem;
+        max-width: 350px;
+    }
+    
+    .featured-section {
+        padding: 2rem 0;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .anime-grid {
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+    }
+    
+    .anime-card {
+        max-width: 150px;
+    }
+    
+    .anime-image {
+        height: 200px; /* Reduce image height */
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        min-height: 40vh;
+        padding: 1rem 0.5rem;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .search-bar {
+        margin-top: 0.8rem;
+        max-width: 300px;
+    }
+    
+    .featured-section {
+        padding: 1.5rem 0;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .anime-grid {
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+        padding: 0 0.25rem;
+    }
+    
+    .anime-card {
+        max-width: 130px;
+    }
+    
+    .anime-image {
+        height: 170px; /* Further reduce image height */
+    }
+    
+    .anime-info-simple {
+        padding: 0.6rem;
+    }
+    
+    .anime-title {
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .genre-tag {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+    
+    .community-rating-simple {
+        font-size: 0.7rem;
+        margin-top: 0.2rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 400px) {
+    .hero-section {
+        min-height: 35vh;
+    }
+    
+    .hero-title {
+        font-size: 1.3rem;
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 0.5rem;
+    }
+    
+    .anime-card {
+        max-width: 110px;
+    }
+    
+    .anime-image {
+        height: 150px;
+    }
+}
+
+/* Fix for genre filter tabs spacing */
+.genre-filter-tabs {
+    margin-bottom: 1.5rem; /* Reduce margin */
+    gap: 0.5rem; /* Tighter gap */
+}
+
+/* Reduce about section spacing */
+.about-section {
+    padding: 2rem 0;
+}
+
+.about-content {
+    margin-top: 1rem;
+}
+
+/* Reduce footer spacing */
+.main-footer {
+    padding: 2rem 1rem;
+}
+
+/* Remove any unnecessary margins */
+.container {
+    margin: 0 auto;
+}
+
+/* Ensure no extra white space */
+.main-container {
+    padding: 0;
+}
+
+/* Fix for very tight layout */
+body {
+    line-height: 1.4;
+}
+
+* {
+    box-sizing: border-box;
+}

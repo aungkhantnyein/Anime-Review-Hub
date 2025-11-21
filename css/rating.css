@@ -1,0 +1,494 @@
+/* rating.css - Compact Modal with Full Stars Visible */
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 10px;
+}
+
+.modal-content {
+    background: #2c3e50;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 380px;
+    border: 2px solid #e74c3c;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-header h2 {
+    color: #e74c3c;
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Rating Container */
+.rating-container {
+    text-align: center;
+    padding: 0;
+}
+
+.rating-stars {
+    font-size: 1.5rem;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    flex-wrap: nowrap;
+}
+
+.star {
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.5rem;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.star.active {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.star:hover {
+    color: #ffed4e;
+    transform: scale(1.1);
+}
+
+.star.hover {
+    color: #ffed4e;
+    transform: scale(1.1);
+}
+
+.rating-value {
+    margin: 12px 0;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 600;
+    min-height: 25px;
+}
+
+.rating-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    min-width: 100px;
+}
+
+.btn-primary {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #7f8c8d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #95a5a6;
+    transform: translateY(-1px);
+}
+
+/* Anime Modal Info */
+.current-anime-info {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.anime-modal-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.anime-modal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.anime-modal-poster {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.anime-modal-placeholder {
+    width: 80px;
+    height: 120px;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 5px;
+}
+
+.anime-modal-rating {
+    color: #f39c12;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Anime Details Page Rating Styles */
+.anime-rating-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rating-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 6px 0;
+}
+
+.rating-item:last-child {
+    margin-bottom: 0;
+}
+
+.rating-item.no-rating {
+    color: #7f8c8d;
+    font-style: italic;
+    justify-content: center;
+}
+
+.rating-label {
+    font-weight: 600;
+    color: var(--text-light);
+    min-width: 100px;
+    font-size: 0.9rem;
+}
+
+.rating-value-large {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #f39c12;
+}
+
+.user-rating-large {
+    color: #e74c3c;
+}
+
+.personal-rating-large {
+    color: #3498db;
+}
+
+.rating-count-large {
+    color: #95a5a6;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.rate-action-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.rate-btn-large {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.rate-btn-large:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+/* Main Page Anime Card Styles */
+.anime-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.rate-btn {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.rate-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.rating-display {
+    margin: 8px 0;
+    text-align: center;
+}
+
+.community-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    color: #f39c12;
+    font-size: 0.8rem;
+}
+
+.user-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.user-rating.no-rating {
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 4px;
+}
+
+.personal-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #3498db;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.rating-label-small {
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+.rating-stars-small {
+    color: #f39c12;
+    font-size: 0.8rem;
+}
+
+.user-star {
+    color: #e74c3c !important;
+}
+
+.personal-star {
+    color: #3498db !important;
+}
+
+.rating-value-small {
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.user-value {
+    color: #e74c3c;
+}
+
+.personal-value {
+    color: #3498db;
+}
+
+.rating-count {
+    color: #95a5a6;
+    font-size: 0.65rem;
+    font-style: italic;
+}
+
+.anime-rating-simple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    color: #f39c12;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Animation for rating submission */
+@keyframes ratingSuccess {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.rating-submitted {
+    animation: ratingSuccess 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 5px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-width: 350px;
+        padding: 15px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .rating-stars {
+        font-size: 1.6rem;
+        gap: 2px;
+    }
+    
+    .star {
+        font-size: 2rem;
+    }
+    
+    .rating-value {
+        font-size: 1rem;
+    }
+    
+    .rating-actions {
+        gap: 8px;
+    }
+    
+    .btn {
+        min-width: 90px;
+        padding: 7px 14px;
+        font-size: 0.85rem;
+    }
+    
+    .anime-modal-poster {
+        width: 70px;
+        height: 105px;
+    }
+    
+    .anime-modal-placeholder {
+        width: 70px;
+        height: 105px;
+    }
+    
+    .anime-modal-title {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 12px;
+        max-width: 320px;
+    }
+    
+    .rating-stars {
+        font-size: 1.4rem;
+        gap: 1px;
+    }
+    
+    .star {
+        font-size: 1.8rem;
+    }
+    
+    .rating-value {
+        font-size: 0.9rem;
+    }
+    
+    .anime-modal-title {
+        font-size: 0.9rem;
+    }
+    
+    .anime-modal-poster {
+        width: 60px;
+        height: 90px;
+    }
+    
+    .anime-modal-placeholder {
+        width: 60px;
+        height: 90px;
+    }
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
