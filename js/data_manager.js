@@ -143,7 +143,7 @@ class AnimeDataManager {
 
         return nameArray.map((name, index) => ({
             name: name,
-            role: roleArray[index] || "Main Character"
+            role: roleArray[index] || roles
         }));
     }
 

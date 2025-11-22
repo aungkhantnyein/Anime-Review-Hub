@@ -694,16 +694,6 @@ body {
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
 /* Responsive Design Fixes */
 @media (max-width: 1200px) {
     .container {

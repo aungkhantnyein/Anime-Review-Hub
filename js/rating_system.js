@@ -1,5 +1,4 @@
 // Rating System for Anime Vision - Complete Version
-console.log('Rating System loading...');
 
 class RatingSystem {
     constructor() {
@@ -10,7 +9,6 @@ class RatingSystem {
 
     // Initialize rating system
     initializeRatingSystem() {
-        console.log('Initializing rating system...');
         this.createRatingModal();
         this.setupEventListeners();
     }
@@ -19,7 +17,6 @@ class RatingSystem {
     createRatingModal() {
         // Check if modal already exists
         if (document.getElementById('ratingModal')) {
-            console.log('Rating modal already exists');
             return;
         }
 
@@ -52,7 +49,6 @@ class RatingSystem {
         `;
 
         document.body.appendChild(ratingModal);
-        console.log('Rating modal created');
     }
 
     // Generate star HTML
@@ -91,7 +87,6 @@ class RatingSystem {
 
     // Handle rate button click
     handleRateClick(animeId) {
-        console.log('Rate clicked for anime:', animeId);
         
         // Check if user is logged in
         if (!userManager || !userManager.isLoggedIn()) {
@@ -257,34 +252,9 @@ class RatingSystem {
         }
         return userManager.getUserRating(animeId);
     }
-
-    // Remove rating (optional feature)
-    removeRating(animeId) {
-        if (!userManager || !userManager.isLoggedIn()) {
-            return { success: false, message: 'Please login to remove rating' };
-        }
-
-        try {
-            delete userManager.users[userManager.currentUser].ratings[animeId];
-            
-            if (userManager.saveUsers()) {
-                // Refresh display
-                if (typeof refreshRatings === 'function') {
-                    refreshRatings();
-                }
-                return { success: true, message: 'Rating removed successfully' };
-            } else {
-                return { success: false, message: 'Error removing rating' };
-            }
-        } catch (error) {
-            console.error('Error removing rating:', error);
-            return { success: false, message: 'Error removing rating' };
-        }
-    }
 }
 
 // Create global instance
-console.log('Creating ratingSystem instance...');
 const ratingSystem = new RatingSystem();
 
 // Global functions for HTML onclick
@@ -292,7 +262,6 @@ function handleRateClick(animeId) {
     if (ratingSystem) {
         ratingSystem.handleRateClick(animeId);
     } else {
-        console.error('Rating system not available');
         alert('Rating system is not ready. Please refresh the page.');
     }
 }
@@ -305,7 +274,4 @@ function closeRatingModal() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded - Rating system ready');
 });
-
-console.log('Rating System loaded completely');

@@ -117,52 +117,6 @@ textarea {
     margin-top: 5px;
 }
 
-/* admin_panel.css ထဲမှာ */
-.btn-edit {
-    background: #3498db;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.btn-edit:hover {
-    background: #2980b9;
-}
-
-.edit-section {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.btn-edit {
-    background: #3498db;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.btn-edit:hover {
-    background: #2980b9;
-}
-
-.edit-section {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-
 .modal-overlay {
     position: fixed;
     top: 0;

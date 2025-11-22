@@ -1,9 +1,7 @@
 // main.js - Simplified Anime Cards (Only Name, Genre, Community Rating)
-console.log('Main Application loading...');
 
 // Wait for data-manager.js to load first
 if (typeof animeManager === 'undefined') {
-    console.error('data-manager.js is not loaded! Please check script order.');
 }
 
 // Anime Data Management
@@ -13,28 +11,59 @@ const animeData = {
     }
 };
 
+function createAnimeCardHTML(anime) {
+    return `
+    <div class="anime-card" onclick="openAnimeCard(${anime.id})">
+        <div class="anime-image">
+            ${anime.image && anime.image !== "default.jpg" ?
+            `<img src="img/${anime.image}" alt="${anime.title}" class="anime-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
+            ''
+        }
+            <div class="image-placeholder" style="${anime.image && anime.image !== 'default.jpg' ? 'display:none' : 'display:flex'}">
+                ${anime.title}
+            </div>
+        </div>
+        <div class="anime-info-simple">
+            <div class="anime-title">${anime.title}</div>
+            <div class="anime-genres">
+                ${anime.genres && anime.genres.length > 0 ?
+            anime.genres.slice(0, 2).map(genre => `<span class="genre-tag">${genre}</span>`).join('') :
+            '<span class="genre-tag">No Genre</span>'
+        }
+                ${anime.genres && anime.genres.length > 2 ?
+            `<span class="genre-tag">+${anime.genres.length - 2}</span>` :
+            ''
+        }
+            </div>
+            <div class="community-rating-simple">
+                <span class="rating-stars-simple">★</span>
+                <span class="rating-value-simple">${anime.rating}/10</span>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
 // Initialize main page content
 function initializeMainPage() {
-    console.log('Main page initialized!');
     loadAnimeData();
     loadGenreTabs();
     setupSearchFunctionality();
-    console.log('User logged in:', userManager ? userManager.isLoggedIn() : false);
 }
 
 // Setup search functionality
 function setupSearchFunctionality() {
     const searchInput = document.querySelector('.search-input');
     const searchBtn = document.querySelector('.search-btn');
-    
+
     if (searchInput) {
-        searchInput.addEventListener('keypress', function(e) {
+        searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 performSearch();
             }
         });
     }
-    
+
     if (searchBtn) {
         searchBtn.addEventListener('click', performSearch);
     }
@@ -52,7 +81,7 @@ function performSearch() {
 
     const filteredAnime = animeData.animes.filter(anime => {
         if (anime.title.toLowerCase().includes(searchTerm)) return true;
-        
+
         if (anime.synopsis) {
             if (typeof anime.synopsis === 'object') {
                 if (anime.synopsis.en && anime.synopsis.en.toLowerCase().includes(searchTerm)) return true;
@@ -91,9 +120,9 @@ function loadAnimeData() {
         <div class="anime-card" onclick="openAnimeCard(${anime.id})">
             <div class="anime-image">
                 ${anime.image && anime.image !== "default.jpg" ?
-                    `<img src="img/${anime.image}" alt="${anime.title}" class="anime-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
-                    ''
-                }
+                `<img src="img/${anime.image}" alt="${anime.title}" class="anime-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
+                ''
+            }
                 <div class="image-placeholder" style="${anime.image && anime.image !== 'default.jpg' ? 'display:none' : 'display:flex'}">
                     ${anime.title}
                 </div>
@@ -102,13 +131,13 @@ function loadAnimeData() {
                 <div class="anime-title">${anime.title}</div>
                 <div class="anime-genres">
                     ${anime.genres && anime.genres.length > 0 ?
-                        anime.genres.slice(0, 2).map(genre => `<span class="genre-tag">${genre}</span>`).join('') :
-                        '<span class="genre-tag">No Genre</span>'
-                    }
-                    ${anime.genres && anime.genres.length > 2 ? 
-                        `<span class="genre-tag">+${anime.genres.length - 2}</span>` : 
-                        ''
-                    }
+                anime.genres.slice(0, 2).map(genre => `<span class="genre-tag">${genre}</span>`).join('') :
+                '<span class="genre-tag">No Genre</span>'
+            }
+                    ${anime.genres && anime.genres.length > 2 ?
+                `<span class="genre-tag">+${anime.genres.length - 2}</span>` :
+                ''
+            }
                 </div>
                 <div class="community-rating-simple">
                     <span class="rating-stars-simple">★</span>
@@ -152,7 +181,7 @@ function loadGenreTabs() {
 
     // Add event listeners to genre tabs
     document.querySelectorAll('.genre-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
+        tab.addEventListener('click', function () {
             document.querySelectorAll('.genre-tab').forEach(t => t.classList.remove('active'));
             this.classList.add('active');
             const selectedGenre = this.getAttribute('data-genre');
@@ -186,38 +215,7 @@ function displayFilteredAnimes(filteredAnimes, title = '') {
         return;
     }
 
-    animeGrid.innerHTML = filteredAnimes.map(anime => {
-        return `
-        <div class="anime-card" onclick="openAnimeCard(${anime.id})">
-            <div class="anime-image">
-                ${anime.image && anime.image !== "default.jpg" ?
-                    `<img src="img/${anime.image}" alt="${anime.title}" class="anime-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
-                    ''
-                }
-                <div class="image-placeholder" style="${anime.image && anime.image !== 'default.jpg' ? 'display:none' : 'display:flex'}">
-                    ${anime.title}
-                </div>
-            </div>
-            <div class="anime-info-simple">
-                <div class="anime-title">${anime.title}</div>
-                <div class="anime-genres">
-                    ${anime.genres && anime.genres.length > 0 ?
-                        anime.genres.slice(0, 2).map(genre => `<span class="genre-tag">${genre}</span>`).join('') :
-                        '<span class="genre-tag">No Genre</span>'
-                    }
-                    ${anime.genres && anime.genres.length > 2 ? 
-                        `<span class="genre-tag">+${anime.genres.length - 2}</span>` : 
-                        ''
-                    }
-                </div>
-                <div class="community-rating-simple">
-                    <span class="rating-stars-simple">★</span>
-                    <span class="rating-value-simple">${anime.rating}/10</span>
-                </div>
-            </div>
-        </div>
-        `;
-    }).join('');
+    animeGrid.innerHTML = filteredAnimes.map(anime => createAnimeCardHTML(anime)).join('');
 }
 
 // Splash Screen Functions
@@ -226,7 +224,6 @@ function enterSite() {
     const main = document.getElementById('mainContent');
 
     if (!splash || !main) {
-        console.error('Splash screen or main content not found!');
         return;
     }
 
@@ -264,10 +261,9 @@ function checkSessionEntry() {
 }
 
 // Check session entry on page load
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded - Initializing application');
+document.addEventListener('DOMContentLoaded', function () {
     checkSessionEntry();
-    
+
     // Additional initialization after a short delay to ensure all scripts are loaded
     setTimeout(() => {
         if (typeof userManager !== 'undefined') {
@@ -278,20 +274,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Open anime card in new page
 function openAnimeCard(animeId) {
-    console.log('Opening anime card:', animeId);
     localStorage.setItem('selectedAnimeId', animeId);
     window.location.href = 'anime_card.html';
 }
-
-// Alias function for compatibility
-function showAnimeDetails(animeId) {
-    openAnimeCard(animeId);
-}
-
-// Show main page (for back button functionality)
-function showMainPage() {
-    document.querySelector('.main-container').style.display = 'block';
-    document.getElementById('animeDetailsSection').style.display = 'none';
-}
-
-console.log('Main Application loaded completely');

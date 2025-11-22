@@ -1,0 +1,302 @@
+// Global variables
+let currentAnime = null;
+let currentLanguage = 'jp';
+let currentRating = 0;
+let currentAnimeId = null;
+
+// Load anime details when page loads
+document.addEventListener('DOMContentLoaded', function () {
+    loadAnimeDetails();
+
+});
+
+function loadAnimeDetails() {
+    const animeId = localStorage.getItem('selectedAnimeId');
+    const animeDetails = document.getElementById('animeDetails');
+
+    if (!animeId) {
+        animeDetails.innerHTML = '<div class="error">No anime selected</div>';
+        return;
+    }
+
+    currentAnimeId = animeId;
+    const animes = animeManager.getAllAnimes();
+    currentAnime = animes.find(a => a.id == animeId);
+
+    if (!currentAnime) {
+        animeDetails.innerHTML = '<div class="error">Anime not found</div>';
+        return;
+    }
+
+    // Load saved language preference
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang) {
+        currentLanguage = savedLang;
+    }
+
+    displayAnimeContent();
+}
+
+// Display anime content with current language
+function displayAnimeContent() {
+    const animeDetails = document.getElementById('animeDetails');
+
+    if (!currentAnime) return;
+
+    // Get user rating if logged in
+    const userRating = userManager ? userManager.getUserRating(currentAnime.id) : null;
+
+    // Calculate average user rating
+    const averageUserRating = calculateAverageRating(currentAnime.id);
+    const ratingCount = getRatingCount(currentAnime.id);
+
+    // Language handling
+    let synopsisText = "";
+    if (currentAnime.synopsis && typeof currentAnime.synopsis === 'object') {
+        if (currentLanguage === 'my') {
+            synopsisText = currentAnime.synopsis.my ||
+                "🚧 Myanmar translation is coming soon! 🚧\n\nWe're working on adding Myanmar language descriptions. Please check back later or use English/Japanese for now.";
+        } else {
+            synopsisText = currentAnime.synopsis[currentLanguage] ||
+                currentAnime.synopsis.en ||
+                "Description not available in this language";
+        }
+    } else {
+        synopsisText = currentAnime.synopsis || "No description available";
+    }
+
+    // Character images
+    const characterItems = currentAnime.characters.map(character => {
+        const characterImageName = character.name.toLowerCase().replace(/\s+/g, '-') + '.jpg';
+        const characterPopupImage = character.name.toLowerCase().replace(/\s+/g, '-') + '-popup.png';
+
+        return `
+                    <div class="character-3d-card">
+                        <div class="character-bg-container">
+                            <img src="img/characters/${characterImageName}" alt="${character.name}" class="character-main-img"
+                                 onerror="this.style.display='none';">
+                        </div>                      
+                        <img src="img/characters/${characterPopupImage}" alt="${character.name}" class="character-3d-popup"
+                             onerror="this.style.display='none';">
+                        <div class="character-caption">${character.name}</div>
+                    </div>
+                `;
+    }).join('');
+
+    // Songs section
+    const songsItems = currentAnime.songs && currentAnime.songs.length > 0 ?
+        currentAnime.songs.map(song => `
+                    <div class="song-item">
+                        <div class="song-player">
+                            <iframe 
+                                width="100%" 
+                                height="200" 
+                                src="https://www.youtube.com/embed/${song.youtubeId}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="song-title">${song.title}</div>
+                    </div>
+                `).join('') :
+        '<div class="no-songs">No songs available</div>';
+
+    // Update HTML content WITH RATING SECTION
+    animeDetails.innerHTML = `
+                <div class="anime-header">
+                    <div class="anime-poster-large">
+                        ${currentAnime.image && currentAnime.image !== "default.jpg" ?
+            `<img src="img/${currentAnime.image}" alt="${currentAnime.title}" 
+                                      onerror="this.onerror=null; this.src='img/default.jpg';">` :
+            '<div class="image-placeholder-large">No Image Available</div>'
+        }
+                    </div>
+                    <div class="anime-info-large">
+                        <h1>${currentAnime.title}</h1>
+                        
+                        <!-- GENRES SECTION -->
+                        <div class="anime-genres-large">
+                            ${currentAnime.genres && currentAnime.genres.length > 0 ?
+            currentAnime.genres.map(genre => `<span class="genre-tag-large">${genre}</span>`).join('') :
+            '<span class="genre-tag-large">No Genre</span>'
+        }
+                        </div>
+                        
+                        <!-- RATING SECTION -->
+                        <div class="anime-rating-section">
+                            <div class="rating-item">
+                                <span class="rating-label">Community Rating:</span>
+                                <span class="rating-value-large">${currentAnime.rating}/10</span>
+                            </div>
+                            ${averageUserRating ?
+            `<div class="rating-item">
+                                    <span class="rating-label">User Rating:</span>
+                                    <span class="rating-value-large user-rating-large">${averageUserRating}/10</span>
+                                    <span class="rating-count-large">(${ratingCount} votes)</span>
+                                </div>` :
+            '<div class="rating-item no-rating">No user ratings yet</div>'
+        }
+                            ${userRating ?
+            `<div class="rating-item">
+                                    <span class="rating-label">Your Rating:</span>
+                                    <span class="rating-value-large personal-rating-large">${userRating}/10</span>
+                                </div>` :
+            ''
+        }
+                        </div>
+
+                        <!-- RATE BUTTON -->
+                        <div class="rate-action-section">
+                            ${userManager && userManager.isLoggedIn() ?
+            `<button class="rate-btn-large" onclick="handleRateClick(${currentAnime.id})">
+                                    ${userRating ? 'Update Your Rating' : 'Rate This Anime'}
+                                </button>` :
+            `<button class="rate-btn-large" onclick="showLoginPrompt()">
+                                    Login to Rate
+                                </button>`
+        }
+                        </div>
+
+                        <div class="anime-synopsis">
+                            <div class="description-header">
+                                <h3>Description</h3>
+                                <div class="language-switcher">
+                                    <button class="lang-btn ${currentLanguage === 'en' ? 'active' : ''}" onclick="switchLanguage('en')">EN</button>
+                                    <button class="lang-btn ${currentLanguage === 'jp' ? 'active' : ''}" onclick="switchLanguage('jp')">JP</button>
+                                    <button class="lang-btn ${currentLanguage === 'my' ? 'active' : ''}" onclick="switchLanguage('my')">MM</button>
+                                </div>
+                            </div>
+                            <p id="synopsis-text" style="white-space: pre-line;">${synopsisText}</p>
+                            ${currentLanguage === 'my' && (!currentAnime.synopsis.my || currentAnime.synopsis.my === '') ?
+            '<div class="language-notice">⚠️ Myanmar translation is not yet available. Our team is working on it!</div>' :
+            ''
+        }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="characters-section">
+                    <h3>Characters</h3>
+                    ${currentAnime.characters && currentAnime.characters.length > 0 ?
+            `<div class="characters-grid">${characterItems}</div>` :
+            '<div class="no-characters">No character information available</div>'
+        }
+                </div>
+
+                <!-- SONGS SECTION -->
+                <div class="songs-section">
+                    <h3>Related Songs</h3>
+                    <div class="songs-grid">
+                        ${songsItems}
+                    </div>
+                </div>
+            `;
+
+    // Load anime info for rating modal
+    loadAnimeInfoForModal();
+}
+
+// Load anime info for rating modal
+function loadAnimeInfoForModal() {
+    const animeInfoElement = document.getElementById('currentAnimeInfo');
+    if (!animeInfoElement || !currentAnime) return;
+
+    animeInfoElement.innerHTML = `
+                <div class="anime-modal-info">
+                    <div class="anime-modal-title">${currentAnime.title}</div>
+                    ${currentAnime.image && currentAnime.image !== "default.jpg" ?
+            `<img src="img/${currentAnime.image}" alt="${currentAnime.title}" class="anime-modal-poster">` :
+            '<div class="anime-modal-placeholder">No Image</div>'
+        }
+                    <div class="anime-modal-rating">
+                        <span>Current IMDb Rating: ${currentAnime.rating}/10</span>
+                    </div>
+                </div>
+            `;
+}
+
+
+function showLoginPrompt() {
+    alert('Please login to rate anime');
+    if (userManager) {
+        // Redirect to main page for login
+        window.location.href = 'index.html';
+    }
+}
+
+// Calculate average rating from all users
+function calculateAverageRating(animeId) {
+    try {
+        const savedUsers = localStorage.getItem('animeUsers');
+        if (savedUsers) {
+            const users = JSON.parse(savedUsers);
+            const allRatings = [];
+
+            Object.values(users).forEach(user => {
+                if (user.ratings && user.ratings[animeId]) {
+                    allRatings.push(user.ratings[animeId]);
+                }
+            });
+
+            if (allRatings.length === 0) return null;
+
+            const sum = allRatings.reduce((total, rating) => total + rating, 0);
+            const average = sum / allRatings.length;
+            return Math.round(average * 10) / 10;
+        }
+    } catch (error) {
+    }
+    return null;
+}
+
+function getRatingCount(animeId) {
+    try {
+        const savedUsers = localStorage.getItem('animeUsers');
+        if (savedUsers) {
+            const users = JSON.parse(savedUsers);
+            let count = 0;
+
+            Object.values(users).forEach(user => {
+                if (user.ratings && user.ratings[animeId]) {
+                    count++;
+                }
+            });
+
+            return count;
+        }
+    } catch (error) {
+        console.error('Error getting rating count:', error);
+    }
+    return 0;
+}
+
+// Language switching function
+function switchLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('preferredLanguage', lang);
+    displayAnimeContent();
+}
+
+function goBack() {
+    window.history.back();
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function (e) {
+    const modal = document.getElementById('ratingModal');
+    if (e.target === modal) {
+        closeRatingModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeRatingModal();
+    }
+});
+
+function loadAnimeData() {
+    displayAnimeContent();
+}
